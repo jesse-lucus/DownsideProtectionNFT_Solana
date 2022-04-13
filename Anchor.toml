@@ -1,5 +1,5 @@
 [programs.localnet]
-anchor_nft = "6qZt2RG8og8DKkjXFi3aQCWMg9pkiUUBb4s6nbGgMPry"
+auction = "AsKrbegKTCnZvmV2Dyw1kUpSps2vMrevpeiJkjex4Mru"
 
 [registry]
 url = "https://anchor.projectserum.com"
