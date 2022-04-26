@@ -4,6 +4,87 @@ use crate::utils::{DESCRIPTION_DEFAULT_SIZE, MAX_PRIMARY_CREATORS_LEN, NAME_DEFA
 use anchor_lang::prelude::*;
 
 #[account]
+pub struct MarketPlace {
+    pub company: Pubkey,
+    pub deposit: Pubkey,
+    pub company_fee_rate: u64
+}
+
+impl MarketPlace {
+    pub const LEN: usize = 8 + 32 + 32 + 8;
+}
+
+#[derive(AnchorDeserialize, AnchorSerialize, Clone, Debug, PartialEq, Eq)]
+pub enum OrderStatus {
+    Active, 
+    Bidded, 
+    UnderDownsideProtectionPhase, 
+    Completed, 
+    Cancelled
+}
+
+#[derive(AnchorDeserialize, AnchorSerialize, Clone, Debug, PartialEq, Eq)]
+pub enum OrderType {
+    FixedPay, 
+    AuctionType
+}
+
+
+#[account]
+pub struct Order {
+    pub order_status: OrderStatus,
+    pub order_type: OrderType,
+    pub token_address: Pubkey,
+    pub seller_address: Pubkey,
+    pub buyer_address: Pubkey,
+    pub token_price: u64,
+    pub protection_amount: u64,
+    pub deposity_id: Pubkey,
+    pub proetection_rate: u64,
+    pub protection_time: u64,
+    pub sold_time: u64,
+    pub offer_closing_time: u64,
+    pub sub_order: Pubkey
+}
+
+impl Order {
+    pub const LEN: usize = 8 
+    + 1
+    + 1
+    + 32
+    + 32
+    + 32
+    + 8
+    + 8
+    + 32
+    + 8
+    + 8
+    + 8
+    + 8
+    + 32;
+}
+
+#[account]
+pub struct SubOrder {
+    pub order_addresss: Pubkey,
+    pub buyer_address: Pubkey,
+    pub token_price: u64,
+    pub protection_rate: u64,
+    pub protection_time: u64,
+    pub valid_until: u64
+}
+
+impl SubOrder {
+    pub const LEN: usize = 8
+    + 32
+    + 32
+    + 8
+    + 8
+    + 8;
+}
+
+
+#[account]
 pub struct Store {
     pub admin: Pubkey,
     pub name: String,

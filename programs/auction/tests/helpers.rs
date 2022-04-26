@@ -1,4 +1,4 @@
-use mpl_auction::{
+use auction::{
     instruction,
     processor::{
         CancelBidArgs, ClaimBidArgs, CreateAuctionArgs, CreateAuctionArgsV2, EndAuctionArgs,

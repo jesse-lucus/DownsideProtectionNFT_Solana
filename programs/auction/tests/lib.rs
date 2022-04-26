@@ -1,7 +1,7 @@
 #![allow(warnings)]
 
 use borsh::{BorshDeserialize, BorshSerialize};
-use mpl_auction::{
+use auction::{
     errors::AuctionError,
     instruction,
     processor::{
@@ -10,7 +10,7 @@ use mpl_auction::{
     },
     BIDDER_POT_TOKEN, PREFIX,
 };
-use mpl_testing_utils::assert_custom_error;
+// use mpl_testing_utils::assert_custom_error;
 use num_traits::FromPrimitive;
 use solana_program::{borsh::try_from_slice_unchecked, instruction::InstructionError};
 use solana_program_test::*;
@@ -1119,7 +1119,7 @@ async fn test_cancel_bid_with_instant_sale_price() {
 #[cfg(feature = "test-bpf")]
 #[tokio::test]
 async fn test_fail_spoof_bidder_pot_token() {
-    use mpl_testing_utils::{assert_custom_error, assert_error};
+    // use mpl_testing_utils::{assert_custom_error, assert_error};
 
     let instant_sale_price = 500;
     let bid_price = 500;

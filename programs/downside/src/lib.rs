@@ -5,7 +5,7 @@ pub mod utils;
 
 use crate::{
     error::ErrorCode,
-    state::{Market, PrimaryMetadataCreators, SellingResource, Store, TradeHistory},
+    state::{Market, PrimaryMetadataCreators, SellingResource, Store, TradeHistory, MarketPlace, Order, SubOrder},
     utils::*,
 };
 use anchor_lang::{prelude::*, AnchorDeserialize, AnchorSerialize, System};
@@ -132,6 +132,54 @@ pub mod fixed_price_sale {
             .process(primary_metadata_creators_bump, creators)
     }
 }
+
+#[derive(Accounts)]
+pub struct CreateMarketPlace<'info> {
+    #[account(mut)]
+    company: Signer<'info>,
+    deposit: Signer<'info>,
+    #[account(init, space=MarketPlace::LEN, payer=company)]
+    marketplace: Box<Account<'info, MarketPlace>>,
+    system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+#[instruction(token_price: u64, protection_rate: u64, protection_time: u64)]
+pub struct CreateOrder<'info> {
+    #[account(mut)]
+    market_place: Box<Account<'info, MarketPlace>>,
+    #[account(init, space=Order::LEN, payer=seller)]
+    order: Account<'info, Order>,
+    #[account(mut)]
+    seller: Signer<'info>,
+    system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+#[instruction(token_price: u64, protection_rate: u64, protection_time: u64)]
+pub struct CreateSubOrder<'info> {
+    #[account(mut)]
+    buyer: Signer<'info>,
+    #[account(init, space=SubOrder::LEN, payer=buyer)]
+    sub_order: Box<Account<'info, SubOrder>>,
+    
+    company: UncheckedAccount<'info>,
+    system_program: Program<'info, System>,
+}
+
+// pub order_status: OrderStatus,
+// pub order_type: OrderType,
+// pub token_address: Pubkey,
+// pub seller_address: Pubkey,
+// pub buyer_address: Pubkey,
+// pub token_price: u64,
+// pub protection_amount: u64,
+// pub deposity_id: Pubkey,
+// pub proetection_rate: u64,
+// pub protection_time: u64,
+// pub sold_time: u64,
+// pub offer_closing_time: u64,
+// pub sub_order: Pubkey
 
 #[derive(Accounts)]
 #[instruction(name: String, description: String)]
